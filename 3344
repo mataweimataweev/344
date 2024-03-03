@@ -1,0 +1,108 @@
+import java.util.Scanner;
+
+public class User {
+    private String username;
+    private String password;
+    private String role;
+
+    public User() {
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.role = "user";
+    }
+
+    public User(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    // Геттеры и Сеттеры
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean authenticate(String inputUsername, String inputPassword) {
+        return this.username.equals(inputUsername) && this.password.equals(inputPassword);
+    }
+
+    public void performAction1() {
+        if (role.equals("admin")) {
+            System.out.println("Админ выполняет действие 1");
+        } else {
+            System.out.println("Пользователь выполняет действие 1");
+        }
+    }
+
+    public void performAction2() {
+        if (role.equals("admin")) {
+            System.out.println("Админ выполняет действие 2");
+        } else {
+            System.out.println("Пользователь выполняет действие 2");
+        }
+    }
+
+    public static void main(String[] args) {
+        User[] users = new User[10];
+        Scanner scanner = new Scanner(System.in);
+
+        for (int i = 0; i < users.length; i++) {
+            System.out.println("Регистрация пользователя " + (i + 1));
+            System.out.print("Введите имя пользователя: ");
+            String username = scanner.nextLine();
+            System.out.print("Введите пароль: ");
+            String password = scanner.nextLine();
+            System.out.print("Выберите роль (admin/user): ");
+            String role = scanner.nextLine();
+
+            users[i] = new User(username, password, role);
+        }
+
+        System.out.println("Регистрация завершена!");
+
+        // Пример аутентификации
+        System.out.println("\nАвторизация:");
+        System.out.print("Введите имя пользователя: ");
+        String inputUsername = scanner.nextLine();
+        System.out.print("Введите пароль: ");
+        String inputPassword = scanner.nextLine();
+
+        boolean loggedIn = false;
+        for (User user : users) {
+            if (user.authenticate(inputUsername, inputPassword)) {
+                loggedIn = true;
+                System.out.println("Успешная авторизация! Роль: " + user.getRole());
+                user.performAction1();
+                user.performAction2();
+                break;
+            }
+        }
+
+        if (!loggedIn) {
+            System.out.println("Ошибка авторизации. Пользователь не найден.");
+        }
+    }
+}
